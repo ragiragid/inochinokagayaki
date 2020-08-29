@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>canvas tutorial</title>
+    <style>
+      #canvas {
+        background: #666;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas" width="640" height="480" style="background-color:white;"></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      $('#canvas').get(0).width = $(window).height() * 0.90
+      $('#canvas').get(0).height = $(window).height();
+      var arcList = [];
+
+      /**
+       * 指定されたx, y地点に、半径radius、色rbgaの円を描く
+       */
+      function drawArc(x, y, radius, rgba) {
+        var context = canvas.getContext('2d');
+        context.beginPath();
+        context.arc(x, y, radius, 0 * Math.PI / 180, 360 * Math.PI / 180, false ) ;
+        context.fillStyle = rgba;
+        context.fill();
+        return context;
+      }
+      /**
+       * 指定されたx, y地点に、長半径xRagius, 短半径yRadius,
+       */
+      function drawEllipse(x, y, radiusX, radiusY, rotation, rgba) {
+        var context = canvas.getContext('2d');
+        context.beginPath();
+        context.ellipse(x, y, radiusX, radiusY, rotation, 0 * Math.PI / 180, 360 * Math.PI / 180);
+        context.fillStyle = rgba;
+        context.fill();
+        return context;
+      }
+      function init() {
+        var centerX =  Math.floor(canvas.width / 2);
+        var centerY =  Math.floor(canvas.height / 2);
+
+        // 赤い背景を描画
+
+        // 1～5
+        arcList.push(drawArc(canvas.width * 0.43, canvas.height * 0.124, canvas.height * 0.1, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawEllipse(canvas.width * 0.296, canvas.height * 0.231, canvas.height * 0.1 * 0.93, canvas.height * 0.1, 0, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawArc(canvas.width * 0.135, canvas.height * 0.328, canvas.height * 0.1, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawArc(canvas.width * 0.293, canvas.height * 0.390, canvas.height * 0.1, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawArc(canvas.width * 0.169, canvas.height * 0.529, canvas.height * 0.125, "rgba(255, 0, 0, 1)"));
+
+        // 6～10
+        arcList.push(drawEllipse(canvas.width * 0.255, canvas.height * 0.685, canvas.height * 0.11 * 0.6, canvas.height * 0.11, 0, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawArc(canvas.width * 0.347, canvas.height * 0.819, canvas.height * 0.09, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawArc(canvas.width * 0.535, canvas.height * 0.840, canvas.height * 0.135, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawEllipse(canvas.width * 0.714, canvas.height * 0.695, canvas.height * 0.143, canvas.height * 0.143 * 0.9, 0, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawEllipse(canvas.width * 0.739, canvas.height * 0.477, canvas.height * 0.113 * 0.83, canvas.height * 0.113, 0, "rgba(255, 0, 0, 1)"));
+
+        // 11～
+        arcList.push(drawEllipse(canvas.width * 0.753, canvas.height * 0.327, canvas.height * 0.16, canvas.height * 0.16 * 0.5, 0, "rgba(255, 0, 0, 1)"));
+        arcList.push(drawArc(canvas.width * 0.653, canvas.height * 0.165, canvas.height * 0.13, "rgba(255, 0, 0, 1)"));
+
+        // 目
+        arcList.push(drawArc(canvas.width * 0.105, canvas.height * 0.31, canvas.height * 0.05, "rgba(255, 255, 255, 1)"));
+        arcList.push(drawArc(canvas.width * 0.079, canvas.height * 0.295, canvas.height * 0.023, "rgba(30, 144, 255, 1)"));
+
+        arcList.push(drawArc(canvas.width * 0.20, canvas.height * 0.55, canvas.height * 0.057, "rgba(255, 255, 255, 1)"));
+        arcList.push(drawArc(canvas.width * 0.197, canvas.height * 0.521, canvas.height * 0.027, "rgba(30, 144, 255, 1)"));
+
+        arcList.push(drawArc(canvas.width * 0.52, canvas.height * 0.89, canvas.height * 0.047, "rgba(255, 255, 255, 1)"));
+        arcList.push(drawArc(canvas.width * 0.52, canvas.height * 0.9175, canvas.height * 0.02, "rgba(30, 144, 255, 1)"));
+
+        arcList.push(drawEllipse(canvas.width * 0.763, canvas.height * 0.707, canvas.height * 0.07, canvas.height * 0.07 * 0.9, 0, "rgba(255, 255, 255, 1)"));
+        arcList.push(drawArc(canvas.width * 0.799, canvas.height * 0.692, canvas.height * 0.028, "rgba(30, 144, 255, 1)"));
+
+        arcList.push(drawArc(canvas.width * 0.685, canvas.height * 0.115, canvas.height * 0.053, "rgba(255, 255, 255, 1)"));
+        arcList.push(drawArc(canvas.width * 0.705, canvas.height * 0.092, canvas.height * 0.025, "rgba(30, 144, 255, 1)"));
+      }
+      init();
+    </script>
+  </body>
+</html>
