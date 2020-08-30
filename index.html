@@ -40,6 +40,7 @@
           context.arc(this.x, this.y, this.radius, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
           if (context.isPointInPath(x, y)) {
             drawArc(this.x, this.y, this.radius, "rgba(255, 0, 0)", context); // 重なっていたら消す
+            eyeOpen(this, 3);
           }
         }
       }
@@ -100,6 +101,16 @@
             canvas.width * 0.705, canvas.height * 0.092, canvas.height * 0.025));
       }
       init();
+
+      // async修飾子を使って非同期関数を宣言します。
+      async function eyeOpen(eye, sec) {
+        await sleepByPromise(sec);
+        eye.render(context);
+      }
+      /** sleep */
+      function sleepByPromise(sec) {
+        return new Promise(resolve => setTimeout(resolve, sec * 1000));
+      }
 
       eyeList.forEach((eye) => eye.render(context));
 
