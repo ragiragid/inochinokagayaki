@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>canvas tutorial</title>
-    <style>
-      #canvas {
-        background: #666;
-      }
-    </style>
+    <title>HTMLとJavascriptでいのちを輝かせる</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
+    <!-- 今回絵を描くcanvasはここで宣言 -->
     <canvas id="canvas" width="640" height="480" style="background-color:white;"></canvas>
     <script>
+      // canvas のサイズ調整。1:0.9にしているけれど縦長気味なので、1:1で良かったかも
       var canvas = document.getElementById("canvas");
       $('#canvas').get(0).width = $(window).height() * 0.90
       $('#canvas').get(0).height = $(window).height();
       var context = canvas.getContext('2d');
-      var bodyList = [];
+
+      // 目クラスのインスタンスを保持する配列
       var eyeList = [];
 
+      /**
+       * 目クラス。目の動作（隠れたり表示したり）はここで管理
+       */
       class Eye {
+        // コンストラクタ。白目の座標と半径、黒目の座標と半径の順で値を引き渡す
         constructor(x, y, radius, irisX, irisY, irisRadius) {
           this.x = x;
           this.y = y;
@@ -28,13 +30,12 @@
           this.irisY = irisY;
           this.irisRadius = irisRadius;
         }
+        // 白目と黒目をレンダリングする
         render(context) {
           drawArc(this.x, this.y, this.radius, "rgba(255, 255, 255)", context);
           drawArc(this.irisX, this.irisY, this.irisRadius, "rgba(30, 144, 255)", context);
         }
-        /**
-         * クリックされた場所の座標を受け取り、この目がクリックされたかを判定する
-         */
+        // クリックされた場所の座標を受け取り、この目がクリックされたかを判定する
         isClick(x, y, context) {
           context.beginPath();
           context.arc(this.x, this.y, this.radius, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
@@ -46,6 +47,7 @@
       }
 
       /**
+       * 円を描く。
        * 指定されたx, y地点に、半径radius、色rbgaの円を描く
        */
       function drawArc(x, y, radius, rgba, context) {
@@ -55,7 +57,8 @@
         context.fill();
       }
       /**
-       * 指定されたx, y地点に、長半径xRagius, 短半径yRadius,
+       * 楕円を描く。
+       * 指定されたx, y地点に、長半径xRagius, 短半径yRadius,傾きrotation、色rgbaの楕円を描く。
        */
       function drawEllipse(x, y, radiusX, radiusY, rotation, rgba, context) {
         context.beginPath();
@@ -63,6 +66,10 @@
         context.fillStyle = rgba;
         context.fill();
       }
+
+      /**
+       * 初期化処理。
+       */
       function init() {
         // 赤い背景を描画
 
@@ -84,7 +91,7 @@
         drawEllipse(canvas.width * 0.753, canvas.height * 0.327, canvas.height * 0.16, canvas.height * 0.16 * 0.5, 0, "rgba(255, 0, 0, 1)", context);
         drawArc(canvas.width * 0.653, canvas.height * 0.165, canvas.height * 0.13, "rgba(255, 0, 0, 1)", context);
 
-        // 目
+        // 目クラス。目は生成したインスタンスを配列として保持する
         eyeList.push(new Eye(canvas.width * 0.105, canvas.height * 0.31, canvas.height * 0.05,
             canvas.width * 0.079, canvas.height * 0.295, canvas.height * 0.023));
 
@@ -100,20 +107,29 @@
         eyeList.push(new Eye(canvas.width * 0.685, canvas.height * 0.115, canvas.height * 0.053,
             canvas.width * 0.705, canvas.height * 0.092, canvas.height * 0.025));
       }
-      init();
 
-      // async修飾子を使って非同期関数を宣言します。
+      /**
+       * 目を開く関数。async修飾子を使って非同期関数を宣言。
+       * 本来であれば Eyeクラス内に置きたいが、async修飾子がエラーとなるためここで宣言
+       */
       async function eyeOpen(eye, sec) {
         await sleepByPromise(sec);
         eye.render(context);
       }
-      /** sleep */
+      /**
+       * sleep処理。指定秒数待機する。
+       */
       function sleepByPromise(sec) {
         return new Promise(resolve => setTimeout(resolve, sec * 1000));
       }
 
+      // 処理開始
+      init();
+
+      // 目を順に表示する
       eyeList.forEach((eye) => eye.render(context));
 
+      // イベントリスナでクリックが取得できるようにする。
       canvas.addEventListener("click", function(event) {
         eyeList.forEach((eye) => eye.isClick(event.pageX, event.pageY, context));
       });
